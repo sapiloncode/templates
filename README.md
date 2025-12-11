@@ -2,7 +2,6 @@
 
 These are templates for scaffolding projects. Use these templates to quickly set up new projects with pre-configured structures, dependencies, and best practices.
 
-
 ## Overview
 
 This repository contains project templates that can be used to bootstrap new applications and services. Each template includes:
