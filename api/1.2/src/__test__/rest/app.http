@@ -1,0 +1,19 @@
+### Get API version
+GET {{host}}/version HTTP/1.1
+
+###
+
+### Sign in - redirect to auth provider
+GET {{host}}/signin?back=https://example.com HTTP/1.1
+
+###
+
+### Sign out - redirect to auth provider  
+GET {{host}}/signout?back=https://example.com HTTP/1.1
+
+###
+
+### Sign in callback - handle OAuth callback
+GET {{host}}/signin-callback?code=test-code&state=https://example.com HTTP/1.1
+
+###

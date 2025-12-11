@@ -1,0 +1,112 @@
+import {
+  PATH_ACCOUNT,
+  PATH_ACCOUNT_DELETE,
+  PATH_ACCOUNT_PROFILE,
+  PATH_ACCOUNT_SETTINGS,
+} from '@src/constants'
+import { $t } from '@src/i18n'
+import { ListWidget, ListWidgetSchema, logout } from '@src/modules'
+import './style.css'
+import { useWidget } from './use-widget'
+// package.json import removed to avoid TypeScript JSON resolution issues in this build
+const pkg = { version: '' }
+
+export default {
+  title: $t.ACCOUNT,
+  width: 'sm',
+  name: PATH_ACCOUNT,
+  widgetType: ListWidget,
+  widgetHook: useWidget,
+
+  header: [],
+
+  items: [
+    {
+      id: 'brand',
+      // css: 'account-brand',
+      handler() {
+        // needed to be UnSelectable
+      },
+    },
+    {
+      id: 'profile',
+      title: 'Profile',
+      icon: 'badge',
+      href: PATH_ACCOUNT_PROFILE,
+    },
+    {
+      id: 'settings',
+      title: 'Settings',
+      icon: 'settings',
+      href: PATH_ACCOUNT_SETTINGS,
+    },
+    {
+      id: 'reload',
+      title: 'Reload',
+      icon: 'refresh',
+      handler() {
+        location.reload()
+      },
+    },
+    {
+      id: 'website',
+      title: '{{PROJECT_TITLE}} Web Site',
+      icon: 'captive_portal',
+      href: 'https://www.{{PROJECT_NAME}}.com',
+    },
+    {
+      id: 'privacy',
+      title: 'Privacy Policy',
+      icon: 'lock',
+      href: 'https://www.{{PROJECT_NAME}}.com/privacy',
+    },
+    {
+      id: 'terms',
+      title: 'Terms and Conditions',
+      icon: 'receipt_long',
+      href: 'https://www.{{PROJECT_NAME}}.com/terms',
+    },
+    {
+      id: 'feature-request',
+      title: 'Feature Request',
+      icon: 'lightbulb_2',
+      href: 'https://t.me/{{PROJECT_NAME}}/4',
+    },
+    {
+      id: 'new-releases',
+      title: 'New Releases',
+      icon: 'new_releases',
+      href: 'https://t.me/{{PROJECT_NAME}}/7',
+    },
+    {
+      id: 'feedback',
+      title: 'Feedback',
+      icon: 'feedback',
+      href: 'https://t.me/{{PROJECT_NAME}}/22',
+    },
+    {
+      id: 'bug-report',
+      title: 'Report a bug',
+      icon: 'bug_report',
+      href: 'https://t.me/{{PROJECT_NAME}}/3',
+    },
+    {
+      id: 'signout',
+      title: 'Sign out',
+      icon: 'logout',
+      // css: 'separator',
+      handler: logout,
+    },
+    {
+      id: 'delete-my-account',
+      title: $t.DELETE_MY_ACCOUNT,
+      disabled: true,
+      href: PATH_ACCOUNT_DELETE,
+    },
+    {
+      id: 'version',
+      disabled: true,
+      title: 'Version: ' + pkg.version,
+    },
+  ],
+} satisfies ListWidgetSchema

@@ -1,0 +1,12 @@
+.widget[data-name='account-profile'] {
+  .entity-item[data-name='photo'] {
+    align-items: center;
+
+    img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+}

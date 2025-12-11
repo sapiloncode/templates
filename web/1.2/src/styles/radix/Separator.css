@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+.SeparatorRoot[data-orientation="horizontal"] {
+	@apply h-px w-full;
+}
+.SeparatorRoot[data-orientation="vertical"] {
+	@apply h-full w-px;
+}

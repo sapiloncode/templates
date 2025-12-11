@@ -1,0 +1,12 @@
+import { useEffect } from 'react'
+
+export const useWindowEvent = <K extends keyof WindowEventMap>(
+  type: K,
+  handler: (this: Window, ev: WindowEventMap[K]) => void
+) =>
+  useEffect(() => {
+    window.addEventListener(type, handler)
+    return () => {
+      window.removeEventListener(type, handler)
+    }
+  }, [handler, type])

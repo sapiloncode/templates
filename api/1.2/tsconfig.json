@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ESNEXT",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "removeComments": false,
+    "preserveSymlinks": true,
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "strictNullChecks": false,
+    "noUncheckedIndexedAccess": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "build",
+    "baseUrl": "./",
+    "paths": {
+      "@sapilon/api-auth": ["../../sapilon/api-auth/src"],
+      "@openapi": ["../openapi/src"],
+      "src/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "package.json", "package-lock.json"],
+  "exclude": ["node_modules", "build"]
+}

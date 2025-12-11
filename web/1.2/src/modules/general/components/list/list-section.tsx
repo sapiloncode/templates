@@ -1,0 +1,71 @@
+import { DropdownMenu, IconButton } from '@src/components'
+import { KEY_ENTER, KEY_ESCAPE } from '@src/constants'
+import { $t } from '@src/i18n'
+import { WidgetMenuItem } from '@src/types'
+import React, { useState } from 'react'
+
+type Props = {
+  caption: string
+  onCollapseChange?: (collapsed: boolean) => void
+}
+
+export const ListSection: React.FC<Props> = ({ caption, onCollapseChange }) => {
+  const [editingTitle, setEditingTitle] = useState(null)
+  const [collapsed, setCollapsed] = useState(false)
+
+  function commitEditTitle() {
+    if (caption !== editingTitle && editingTitle.trim()) {
+      // updateTopicGroupTitle(cn, section.index, editingTitle)
+    }
+
+    setEditingTitle(null)
+  }
+
+  function handleCollapseChange() {
+    onCollapseChange?.(!collapsed)
+    setCollapsed((value) => !value)
+  }
+
+  const menuItems: WidgetMenuItem[] = [
+    {
+      label: $t.EDIT,
+      icon: 'edit',
+      async handler() {
+        setEditingTitle(caption)
+      },
+    },
+    {
+      label: $t.DELETE,
+      icon: 'delete',
+      async handler() {
+        // deleteTopicGroup(cn, section.index)
+      },
+    },
+  ]
+
+  return (
+    <div className="bg-neutral-100 dark:bg-neutral-700 border-t border-b border-[var(--border-default)] dark:border-neutral-600 text-neutral-500 dark:text-neutral-200 flex items-center px-[10px] pt-[30px]">
+      <IconButton onClick={handleCollapseChange} icon="expand_more" rotate={collapsed ? -90 : 0} />
+
+      <div className="user-select-none flex-1 inline-block tracking-widest font-medium">
+        {editingTitle !== null ? (
+          <input
+            className="flex-1 border-none bg-transparent text-inherit font-medium tracking-widest w-full"
+            autoFocus
+            onBlur={commitEditTitle}
+            onKeyDown={(ev) => ev.key == KEY_ENTER && commitEditTitle()}
+            onKeyUp={(ev) => ev.key == KEY_ESCAPE && setEditingTitle(null)}
+            onChange={(ev) => setEditingTitle(ev.target.value)}
+            defaultValue={editingTitle}
+          />
+        ) : (
+          caption
+        )}
+      </div>
+
+      <DropdownMenu menuItems={menuItems}>
+        <IconButton icon="steppers" />
+      </DropdownMenu>
+    </div>
+  )
+}

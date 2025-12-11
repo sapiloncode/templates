@@ -1,0 +1,9 @@
+html {
+  /* Topic Status Colors */
+  --topic-overdue: var(--rose-400);
+  --topic-planned: var(--green-600);
+  --topic-done: var(--neutral-400);
+  --topic-canceled: var(--neutral-400);
+  --topic-started: var(--yellow-500);
+  --topic-unplanned: var(--blue-400);
+}

@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+
+.SelectTrigger {	
+	@apply inline-flex items-center justify-center rounded-md px-3 py-2 text-sm leading-none gap-2 h-9 bg-white text-[hsl(var(--violet-11))] shadow-md cursor-pointer;
+}
+.SelectTrigger:hover {
+	@apply bg-[hsl(var(--mauve-3))];
+}
+.SelectTrigger:focus {
+	@apply shadow-black;
+}
+.SelectTrigger[data-placeholder] {
+	@apply text-[hsl(var(--violet-9))];
+}
+
+.SelectIcon {
+	@apply text-[hsl(var(--violet-11))];
+}
+
+.SelectContent {
+	@apply overflow-hidden bg-white rounded-md shadow-md z-20;
+}
+
+.SelectViewport {
+	@apply p-2;
+}
+
+.SelectItem {
+	@apply text-sm leading-none rounded-md flex items-center justify-center h-9 p-2 relative select-none cursor-pointer;
+}
+.SelectItem:hover {
+	@apply !bg-blue-100;
+}
+.SelectItem[data-disabled] {
+	@apply text-[hsl(var(--mauve-8))];
+}
+.SelectItem[data-highlighted] {
+	@apply outline-none bg-[hsl(var(--violet-9))] text-[hsl(var(--violet-1))];
+}
+
+.SelectLabel {
+	@apply p-0 text-sm leading-none h-9 text-[hsl(var(--mauve-11))];
+}
+
+.SelectSeparator {
+	@apply h-px bg-[hsl(var(--violet-6))] m-2;
+}
+
+.SelectItemIndicator {
+	@apply absolute left-0 w-6 flex items-center justify-center;
+}
+
+.SelectScrollButton {
+	@apply flex items-center justify-center h-9 bg-white text-[hsl(var(--violet-11))] cursor-default;
+}

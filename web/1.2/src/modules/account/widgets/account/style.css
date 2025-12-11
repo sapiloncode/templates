@@ -1,0 +1,30 @@
+.widget[data-name='account'] {
+  .account-brand {
+    height: inherit;
+    img {
+      padding: 2rem;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+  }
+
+  .separator {
+    margin-top: 2rem;
+    border-top: 1px solid var(--gray-200);
+  }
+
+  html.dark .separator {
+    border-bottom: 1px solid var(--neutral-600);
+  }
+
+  .list-widget-item[id='delete-my-account'] {
+    :hover {
+      text-decoration: underline;
+    }
+    margin-top: 1rem;
+    .item-title {
+      color: var(--gray-500);
+    }
+  }
+}

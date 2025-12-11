@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+.AvatarRoot {
+	@apply inline-flex items-center justify-center align-middle 
+		overflow-hidden select-none rounded-full bg-[hsl(var(--black-a3))];
+
+	&[data-size='sm'] {
+		@apply w-6 h-6;
+	}
+
+	&[data-size='md'] {
+		@apply w-8 h-8;
+	}
+
+	&[data-size='lg'] {
+		@apply w-14 h-14;
+	}
+}
+
+.AvatarImage {
+	@apply w-full h-full object-cover;
+}
+
+.AvatarFallback {
+	@apply w-full h-full flex items-center justify-center bg-white 
+	text-[hsl(var(--violet-11))] text-base font-medium leading-none;
+}

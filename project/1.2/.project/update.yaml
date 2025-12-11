@@ -1,0 +1,19 @@
+UpdateLog:
+  - 2025-11-06: Initial version
+
+Variables:
+  - PROJECT_NAME
+  - PROJECT_TITLE
+
+# Files/patterns to ignore during updates (only created during first-time project creation)
+UpdateIgnore:
+  - '.project/**/manifest.json'
+  - '.project/manifest.json'
+  - '.vscode/tasks.json'
+  - 'README.md'
+  - 'assets/graphic/logo.svg'
+
+SyncIgnore:
+  - 'template.meta.yaml'
+  - '.project/'
+  - 'README.md'

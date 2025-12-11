@@ -1,0 +1,22 @@
+import cs from 'classnames'
+import { FC } from 'react'
+import { markdown2Html } from '@src/lib'
+import type { WidgetComponentProps } from '@src/modules'
+
+type Props = {
+  content: string
+}
+
+export type MarkdownWidgetSchema = WidgetComponentProps<Props> & Props
+
+export const MarkdownWidget: FC<MarkdownWidgetSchema> = ({ content, css, pathname }) => {
+  if (!content) return null
+  const html = markdown2Html(content)
+  return (
+    <div
+      className={cs('widget widget-markdown', css)}
+      data-name={pathname}
+      dangerouslySetInnerHTML={{ __html: html }}
+    ></div>
+  )
+}

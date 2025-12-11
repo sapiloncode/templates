@@ -1,0 +1,13 @@
+export const FORMAT_DATE = 'yyyy-MM-dd'
+export const ENVIRONMENT_DEVELOPMENT = 'dev'
+
+export const SSM_PARAM_API_BASE_URL = 'api-base-url'
+export const SSM_PARAM_HOME_PAGE_URL = 'home-page-url'
+export const SSM_PARAM_CORS_ALLOWED_ORIGINS = 'cors-allowed-origins'
+export const SSM_PARAM_DATABASE_URL = 'database-url'
+export const SSM_PARAM_TOKEN_SECRET = 'token-secret'
+export const SSM_PARAM_DB_USER = 'db-user'
+export const SSM_PARAM_DB_HOST = 'db-host'
+export const SSM_PARAM_DB_PORT = 'db-port'
+export const SSM_PARAM_DB_NAME = 'db-name'
+export const SSM_PARAM_DB_PASS = 'db-pass'

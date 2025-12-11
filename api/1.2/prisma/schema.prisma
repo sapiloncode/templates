@@ -1,0 +1,39 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x", "linux-arm64-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Account {
+  id                                     Int            @id @default(autoincrement())
+  created                                DateTime       @db.Timestamp(0)
+  email                                  String?        @unique(map: "unique_email")
+  photo                                  String?
+  title                                  String?
+  firstName                              String?        @map("first_name")
+  lastName                               String?        @map("last_name")
+  birthDate                              DateTime?      @map("birth_date") @db.Date
+  gender                                 Gender?
+  mobile                                 String?
+  company                                String?
+  status                                 AccountStatus?
+
+  @@map("accounts")
+}
+
+enum Gender {
+  Male
+  Female
+  NonBinary
+}
+
+enum AccountStatus {
+  Invited
+  Active
+  Deleted
+}

@@ -1,0 +1,1 @@
+-- This script is used to seed the database for the project.

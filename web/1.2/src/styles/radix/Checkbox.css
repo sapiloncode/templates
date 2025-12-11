@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+
+.CheckboxRoot {
+	@apply bg-white w-6 h-6 rounded-md flex items-center justify-center shadow-md;
+}
+.CheckboxRoot:hover {
+	@apply  bg-[hsl(var(--violet-3))];
+}
+.CheckboxRoot:focus {
+	@apply shadow-black;
+}
+
+.CheckboxIndicator {
+	@apply text-[hsl(var(--violet-11))];
+}
+

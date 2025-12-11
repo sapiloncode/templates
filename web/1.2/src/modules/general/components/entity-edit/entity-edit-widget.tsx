@@ -1,0 +1,216 @@
+import { Icon, WidgetComponent } from '@src/components'
+import { useAppSelector } from '@src/hooks'
+import { $t } from '@src/i18n'
+import type { WidgetAction, WidgetComponentProps } from '@src/modules'
+import { setIsDirty } from '@src/modules'
+import type { AppContext, FieldChangeEvent, FieldSchema, FieldsQuery } from '@src/types'
+import { camelCaseToTitleCase } from '@src/utils'
+import { useFormik } from 'formik'
+import markdownit from 'markdown-it'
+import { FC } from 'react'
+import { FieldEditor } from './field-editor'
+const md = markdownit({ html: true })
+
+type Props = {
+  title: string
+  fields: FieldSchema[]
+  entity?: Record<string, unknown>
+  onAbort?: (cn: AppContext) => void
+  onSave?: (cn: AppContext, args: { delta?: unknown; entity?: unknown }) => void
+  onChange?: (cn: AppContext, ev: FieldChangeEvent) => void
+  onClickAction?: (cn: AppContext, args: { entity?: unknown; field: FieldSchema }) => void
+}
+
+export type EntityEditWidgetSchema = WidgetComponentProps<Props> & Props
+
+export const EntityEditWidget: FC<EntityEditWidgetSchema> = ({
+  cn,
+  fields,
+  entity,
+  onAbort,
+  title,
+  onSave,
+  onChange,
+  onClickAction,
+  header,
+  ...props
+}) => {
+  const isDirty = useAppSelector((state) => state.general.isDirty)
+  const allowSave = !!onSave
+
+  const validate = (values: Record<string, unknown>) => {
+    const errors: Record<string, string> = {}
+
+    for (const field of fields) {
+      if (field.required && (values[field.name] == null || values[field.name] === '')) {
+        errors[field.name] = `${field.title ?? camelCaseToTitleCase(field.name)} is required`
+      }
+    }
+
+    return errors
+  }
+
+  const formik = useFormik({
+    initialValues: fields.reduce(
+      (acc, field) => {
+        acc[field.name] = entity?.[field.name] ?? field.defaultValue
+        return acc
+      },
+      {} as Record<string, unknown>
+    ),
+    validate,
+    onSubmit: (values) => {
+      const delta = Object.keys(values).reduce((acc: Record<string, unknown>, key) => {
+        if (values[key] !== formik.initialValues[key]) {
+          acc[key] = values[key]
+        }
+        return acc
+      }, {})
+
+      onSave(cn, { delta, entity: values })
+      setIsDirty(cn, false)
+    },
+    onReset() {
+      setIsDirty(cn, false)
+    },
+  })
+
+  function handleAction(field: FieldSchema) {
+    onClickAction(cn, { field, entity: formik.values })
+  }
+
+  function handleChange(ev: FieldChangeEvent) {
+    onChange?.(cn, ev)
+
+    if (allowSave) {
+      setIsDirty(cn, true)
+    }
+
+    const customEvent = {
+      target: {
+        name: ev.field.name || '', // The `name` of the field (ensure it's provided to Formik)
+        value: ev.value, // The new value you want to set
+      },
+      persist: () => {
+        // A no-op to match Formik's expected event signature
+      },
+    }
+
+    // Update Formik state but do not submit
+    formik.setFieldValue(customEvent.target.name, customEvent.target.value)
+  }
+
+  const editHeader: WidgetAction[] = [
+    {
+      name: 'cancel',
+      label: $t.CANCEL,
+      modifiers: isDirty ? ['hidden'] : [],
+      handler: async () => {
+        onAbort?.(cn)
+        setIsDirty(cn, false)
+      },
+    },
+    {
+      label: 'Save',
+      name: 'save',
+      modifiers: isDirty ? ['hidden'] : [],
+      handler: async () => {
+        formik.submitForm()
+      },
+    },
+  ]
+
+  function fieldIsVisible(field: FieldSchema) {
+    if (field.visibleOn && !evaluateVisibility(field.visibleOn)) {
+      return false
+    }
+
+    return field.editState !== 'hidden'
+  }
+
+  function evaluateVisibility(query: FieldsQuery): boolean {
+    const fieldValue = formik.values[query.field]
+    const field = fields.find(({ name }) => name == query.field)
+    if (!field) {
+      throw `evaluateVisibility failed. field '${query.field}' does not exist in fields list.`
+    }
+    const targetValue = query.value
+    switch (query.operator) {
+      case 'eq':
+        return fieldValue === targetValue
+      case 'neq':
+        return fieldValue !== targetValue
+      case 'gt':
+        return Number(fieldValue) > Number(targetValue)
+      case 'gte':
+        return Number(fieldValue) >= Number(targetValue)
+      case 'lt':
+        return Number(fieldValue) < Number(targetValue)
+      case 'lte':
+        return Number(fieldValue) <= Number(targetValue)
+      case 'in':
+        return Array.isArray(targetValue) && targetValue.includes(fieldValue)
+      case 'nin':
+        return Array.isArray(targetValue) && !targetValue.includes(fieldValue)
+      case 'like':
+        return typeof fieldValue === 'string' && new RegExp(String(targetValue)).test(fieldValue)
+      case 'nlike':
+        return typeof fieldValue === 'string' && !new RegExp(String(targetValue)).test(fieldValue)
+      case 'between':
+        return Array.isArray(targetValue) && fieldValue >= targetValue[0] && fieldValue <= targetValue[1]
+      case 'nbetween':
+        return Array.isArray(targetValue) && (fieldValue < targetValue[0] || fieldValue > targetValue[1])
+      case 'nn':
+        return fieldValue != null
+      case 'nl':
+        return fieldValue == null
+      default:
+        return true // If the operator is unknown, default to visible
+    }
+  }
+
+  const visibleFields = fields.filter(fieldIsVisible)
+
+  return (
+    <WidgetComponent cn={cn} header={[...(header ?? []), ...editHeader]} title={title} {...props}>
+      <form
+        onSubmit={formik.handleSubmit}
+        className="flex flex-col bg-white dark:bg-neutral-800 text-gray-600 dark:text-neutral-200 p-8 pt-8 pb-16 px-4 gap-4"
+      >
+        {visibleFields.map((field, index) => (
+          <div key={field.name} data-name={field.name} className="entity-item flex flex-col items-start text-xs gap-1">
+            {field.type !== 'action' && (
+              <div className="font-semibold flex items-center gap-1">
+                {!!field.icon && <Icon icon={field.icon} />}
+                <span>{field.title ?? camelCaseToTitleCase(field.name)}</span>
+              </div>
+            )}
+
+            {!!field.comment && (
+              <div
+                className="entity-item_comment text-[smaller] text-gray-600 [&_ul]:pl-5 [&_ul_li]:list-disc"
+                dangerouslySetInnerHTML={{ __html: md.render(field.comment) }}
+              />
+            )}
+
+            <FieldEditor
+              cn={cn}
+              onChange={handleChange}
+              onBlur={formik.handleBlur}
+              onClickAction={() => handleAction(field)}
+              readOnly={field.editState === 'readonly'}
+              field={field}
+              index={index}
+              value={formik.values[field.name]}
+              placeholder={field.placeholder}
+            />
+
+            {formik.errors[field.name] ? (
+              <div className="text-[smaller] text-red-500">{formik.errors[field.name]}</div>
+            ) : null}
+          </div>
+        ))}
+      </form>
+    </WidgetComponent>
+  )
+}

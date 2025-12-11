@@ -1,0 +1,13 @@
+{
+  "name": "test",
+  "version": "25.0.0",
+  "description": "E2E Cypress Tests",
+  "main": "index.js",
+  "scripts": {
+    "open": "cypress open",
+    "test:e2e": "cypress run --quiet"
+  },
+  "dependencies": {
+    "cypress": "^15.2.0"
+  }
+}

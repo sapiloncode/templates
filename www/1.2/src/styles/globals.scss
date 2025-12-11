@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  height: 100%;
+  background-color: #0b0f1c;
+}
+
+/* Typography overrides for article content rendered with `.prose` */
+.prose {
+  h1 {
+    @apply text-4xl font-bold mt-8 mb-4;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold mt-8 mb-3;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold mt-6 mb-2;
+  }
+
+  h4 {
+    @apply text-xl font-semibold mt-4 mb-2;
+  }
+
+  p {
+    @apply leading-7 my-4;
+  }
+
+  ul {
+    @apply list-disc list-inside my-4;
+  }
+
+  ol {
+    @apply list-decimal list-inside my-4;
+  }
+
+  a {
+    @apply underline text-blue-400 hover:text-blue-300 transition-colors;
+  }
+}

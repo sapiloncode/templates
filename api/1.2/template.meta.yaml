@@ -1,0 +1,20 @@
+Update log:
+  - 2025-11-06: Initial version
+
+Variables:
+  - PROJECT_NAME
+  - PROJECT_TITLE
+  - AWS_PROFILE
+
+# Files/patterns to ignore during updates (only created during first-time app creation)
+UpdateIgnore:
+  - 'prisma/schema.prisma'
+  - 'prisma/setup/3-baseline.sql'
+  - 'src/__test__/**'
+  - 'src/assets/figlet.ts'
+  - 'src/config/config.ts'
+  - 'src/constants/constants.ts'
+  - 'src/modules/index.ts'
+  - 'openapi.yaml'
+  - 'README.md'
+  - 'template.meta.yaml'

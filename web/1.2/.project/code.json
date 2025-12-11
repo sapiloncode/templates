@@ -1,0 +1,20 @@
+{
+  "template": "web@1.1",
+  "syncIgnore": [
+    "src/openapi/",
+    "src/modules/project/",
+    "src/modules/general/",
+    "src/constants/constants.ts",
+    "src/config/config.ts",
+    "build/",
+    ".http/",
+    ".env",
+    "package-lock.json",
+    "template.meta.yaml",
+    "public/site.webmanifest",
+    "src/core/app-nav.ts",
+    "src/core/store.ts",
+    "src/core/widgets.ts",
+    "src/modules/account/widgets/account.ts"
+  ]
+}

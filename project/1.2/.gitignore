@@ -1,0 +1,223 @@
+# =============================================================================
+# MONOREPO GITIGNORE
+# =============================================================================
+# This gitignore covers: NestJS, React, Angular, Next.js, iOS Swift, Apple Watch, Jest, VSCode
+
+# =============================================================================
+# DEPENDENCIES
+# =============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+yarn.lock
+pnpm-debug.log*
+.pnp
+.pnp.js
+
+# =============================================================================
+# ENVIRONMENT & CONFIGURATION
+# =============================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+.env.development
+.env.test
+.env.staging
+
+# =============================================================================
+# BUILD OUTPUTS (General)
+# =============================================================================
+# Build and distribution folders
+build/
+dist/
+out/
+
+# =============================================================================
+# NESTJS (Backend API)
+# =============================================================================
+# Logs
+api/logs/
+api/*.log
+api-logs/
+
+# Database
+api/prisma/migrations/dev.db*
+
+# =============================================================================
+# REACT & VITE
+# =============================================================================
+# Vite
+web/.vite/
+web/vite.config.js.timestamp-*
+
+# =============================================================================
+# NEXT.JS
+# =============================================================================
+# Next.js specific
+www/.next/
+
+# =============================================================================
+# ANGULAR (if present)
+# =============================================================================
+# Build outputs
+.angular/
+
+# =============================================================================
+# IOS SWIFT & APPLE WATCH
+# =============================================================================
+# Xcode
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+*.xcworkspace/xcshareddata/*.xcscmblueprint
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Build outputs
+ios/DerivedData/
+ios/*.ipa
+ios/*.dSYM.zip
+ios/*.dSYM
+
+# Watch app
+watch/DerivedData/
+watch/*.ipa
+watch/*.dSYM.zip
+watch/*.dSYM
+
+# Swift Package Manager
+.swiftpm/
+Packages/
+Package.pins
+Package.resolved
+*.xcodeproj/project.xcworkspace/
+
+# CocoaPods
+ios/Pods/
+watch/Pods/
+*.podspec
+Podfile.lock
+
+# Carthage
+ios/Carthage/
+watch/Carthage/
+Cartfile.resolved
+
+# =============================================================================
+# TESTING
+# =============================================================================
+# Jest
+coverage/
+.nyc_output/
+junit.xml
+
+# Cypress
+test/cypress/downloads/
+test/cypress/screenshots/
+test/cypress/videos/
+
+# =============================================================================
+# DEVELOPMENT TOOLS
+# =============================================================================
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IntelliJ/WebStorm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# =============================================================================
+# BUILD TOOLS & CACHES
+# =============================================================================
+# Turbo
+.turbo/
+.turbo.json
+
+# TypeScript
+*.tsbuildinfo
+.tscache/
+
+# ESLint
+.eslintcache
+
+# Prettier
+.prettierignore
+
+# Babel
+.babel_cache/
+
+# Rollup
+.rollup.cache/
+
+# Webpack
+.webpack/
+
+# Parcel
+.cache/
+.parcel-cache/
+
+# =============================================================================
+# OPERATING SYSTEM
+# =============================================================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# =============================================================================
+# SECURITY & CERTIFICATES
+# =============================================================================
+*.pem
+*.key
+*.crt
+*.p12
+*.mobileprovision
+
+# =============================================================================
+# TEMPORARY FILES
+# =============================================================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.backup
+

@@ -1,0 +1,41 @@
+-- 1️⃣ Create a dedicated login role (user) with explicit privileges
+CREATE ROLE {{PROJECT_NAME}} LOGIN PASSWORD '123'
+  NOSUPERUSER
+  NOCREATEROLE
+  NOCREATEDB
+  NOREPLICATION
+  INHERIT
+  CONNECTION LIMIT 10;  -- optional: limit simultaneous sessions
+
+-- 2️⃣ Create a dedicated database owned by that role
+CREATE DATABASE {{PROJECT_NAME}} OWNER {{PROJECT_NAME}}
+  ENCODING 'UTF8'
+  LC_COLLATE 'en_US.UTF-8'
+  LC_CTYPE 'en_US.UTF-8'
+  TEMPLATE template0;  -- ensures consistent locale setup
+
+-- 3️⃣ Restrict default public access to the DB
+REVOKE CONNECT ON DATABASE {{PROJECT_NAME}} FROM PUBLIC;
+GRANT CONNECT ON DATABASE {{PROJECT_NAME}} TO {{PROJECT_NAME}};
+
+-- 4️⃣ Connect to the new database
+\c {{PROJECT_NAME}}
+
+-- 5️⃣ Revoke all schema privileges from PUBLIC (tight isolation)
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+
+-- 6️⃣ Make sure the owner has full control of its schema
+ALTER SCHEMA public OWNER TO {{PROJECT_NAME}};
+
+-- 7️⃣ Optionally, re-grant minimal privileges (if needed)
+GRANT USAGE, CREATE ON SCHEMA public TO {{PROJECT_NAME}};
+
+-- 8️⃣ Restrict default privileges for future objects (important!)
+ALTER DEFAULT PRIVILEGES REVOKE ALL ON TABLES FROM PUBLIC;
+ALTER DEFAULT PRIVILEGES REVOKE ALL ON SEQUENCES FROM PUBLIC;
+ALTER DEFAULT PRIVILEGES REVOKE ALL ON FUNCTIONS FROM PUBLIC;
+ALTER DEFAULT PRIVILEGES GRANT ALL ON TABLES TO {{PROJECT_NAME}};
+ALTER DEFAULT PRIVILEGES GRANT ALL ON SEQUENCES TO {{PROJECT_NAME}};
+
+-- 9️⃣ (Optional hardening) Prevent accidental cross-DB connections
+REVOKE ALL ON DATABASE postgres FROM PUBLIC;

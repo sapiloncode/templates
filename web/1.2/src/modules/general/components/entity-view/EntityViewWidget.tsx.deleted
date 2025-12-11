@@ -1,0 +1,44 @@
+import { format, parseISO } from 'date-fns'
+import { FC } from 'react'
+import { WidgetComponent } from '@src/components'
+import { camelCaseToTitleCase } from '@src/lib'
+import type { WidgetComponentProps } from '@src/modules'
+import type { FieldSchema } from '@src/types'
+
+type Props = {
+  fields: FieldSchema[]
+  entityName: string
+  entity: Record<string, unknown>
+}
+
+export type EntityViewWidgetSchema = WidgetComponentProps<Props> & Props
+
+export const EntityViewWidget: FC<EntityViewWidgetSchema> = ({ cn, fields, entity, ...props }) => {
+  function getValue(field: FieldSchema) {
+    const value = entity[field.name]
+    if (value == null || value === '') return '-'
+
+    switch (field.type) {
+      case 'date':
+        return format(parseISO(String(value)), 'yyyy-MM-dd')
+
+      default:
+        return String(value)
+    }
+  }
+
+  return (
+    <WidgetComponent cn={cn} {...props}>
+      <div className="flex flex-col pt-4 pb-12 px-2">
+        {fields.map((field) => (
+          <div className="flex flex-col py-2" key={field.name}>
+            <div className="px-2 text-gray-500 tracking-wider">
+              <span className="font-semibold text-xs">{field.title || camelCaseToTitleCase(field.name)}</span>
+            </div>
+            <div className="text-sm px-2 pb-2 text-black">{getValue(field)}</div>
+          </div>
+        ))}
+      </div>
+    </WidgetComponent>
+  )
+}

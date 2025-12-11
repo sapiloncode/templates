@@ -1,0 +1,128 @@
+import { Button, HiddenFileActions, HiddenFileInput, InputDate, Select } from '@src/components'
+import { FORMAT_DATE } from '@src/constants'
+import { hideNavbarInMobile } from '@src/modules'
+import type { AppContext, FieldChangeEvent, FieldSchema, ID } from '@src/types'
+import cs from 'classnames'
+import { format } from 'date-fns'
+import { FC, FocusEvent, useRef } from 'react'
+import { BooleanField } from './boolean-field'
+
+type Props = {
+  field: FieldSchema
+  value: unknown
+  index: number
+  readOnly: boolean
+  onChange: (ev: FieldChangeEvent) => void
+  onBlur: (ev: FocusEvent) => void
+  cn: AppContext
+  placeholder?: string
+  css?: string
+  onClickAction: () => void
+}
+
+export const FieldEditor: FC<Props> = ({
+  cn,
+  field,
+  index,
+  value,
+  readOnly,
+  onChange,
+  onBlur,
+  placeholder,
+  onClickAction,
+}) => {
+  const fileInputRef = useRef<HiddenFileActions | null>(null)
+
+  const handleChange = (value: ID | number | boolean | FileList | string) => {
+    onChange({ field, value })
+  }
+
+  function handleFocus(): void {
+    hideNavbarInMobile(cn, true)
+  }
+
+  function handleBlur(ev: FocusEvent): void {
+    hideNavbarInMobile(cn, false)
+    onBlur(ev)
+  }
+
+  const isReadonly = readOnly || field.editState === 'readonly'
+
+  switch (field.type) {
+    case 'boolean':
+      return (
+        <BooleanField name={field.name} onChange={handleChange} value={value as boolean} nullable={!field.required} />
+      )
+
+    case 'select':
+      return (
+        <Select
+          readOnly={isReadonly}
+          name={field.name}
+          onChange={handleChange}
+          value={value as ID}
+          options={field.options}
+        />
+      )
+
+    case 'date':
+      return isReadonly ? (
+        <span>{format(typeof value === 'string' ? new Date(value) : (value as number), FORMAT_DATE)}</span>
+      ) : (
+        <InputDate
+          name={field.name}
+          onChange={(ev) => {
+            handleChange(ev.value)
+          }}
+          value={value as number | string | Date}
+        />
+      )
+
+    case 'image':
+      return (
+        <div className="flex flex-col gap-1 items-center">
+          <img src={String(value)} alt="preview" className="max-h-[300px] max-w-full" />
+          <HiddenFileInput ref={fileInputRef} onChange={(ev) => handleChange(ev.currentTarget.files)} />
+          <a href="#" onClick={() => fileInputRef.current.openFile()} className="text-blue-500">
+            Edit
+          </a>
+        </div>
+      )
+
+    case 'action':
+      return (
+        <Button disabled={field.actionState === 'disable'} onClick={onClickAction}>
+          {field.title}
+        </Button>
+      )
+
+    default:
+      return field.multiline ? (
+        <textarea
+          name={field.name}
+          onChange={(ev) => handleChange(ev.currentTarget.value)}
+          onBlur={onBlur}
+          readOnly={isReadonly}
+          autoFocus={index === 0}
+          value={String(value || '')}
+          className="w-full py-[7px] px-[10px] border border-gray-200 rounded-lg text-sm bg-white outline-none h-20 shadow-sm read-only:bg-[whitesmoke]"
+        />
+      ) : (
+        <input
+          type={field.type === 'number' ? 'number' : 'text'}
+          className={cs(
+            'text-field w-full min-w-[100px] px-2 h-[38px] min-h-[38px] text-sm rounded-lg bg-white border border-gray-200 shadow-sm read-only:bg-[whitesmoke]',
+            { 'w-1/2': field.type === 'number' }
+          )}
+          onChange={(ev) => handleChange(ev.currentTarget.value)}
+          onBlur={handleBlur}
+          placeholder={placeholder}
+          onFocus={handleFocus}
+          readOnly={isReadonly}
+          name={field.name}
+          autoFocus={index === 0}
+          value={String(value || '')}
+        />
+      )
+  }
+}

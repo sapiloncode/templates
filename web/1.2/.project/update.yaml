@@ -1,0 +1,11 @@
+Update log:
+  - 2025-11-10: Rename widget pathname to name
+
+Variables:
+  - PROJECT_NAME
+  - PROJECT_TITLE
+
+UpdateIgnore:
+  - 'src/constants/constants.ts'
+  - 'src/core/app-nav.ts'
+  - 'src/core/store.ts'

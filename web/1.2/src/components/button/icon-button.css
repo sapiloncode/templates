@@ -1,0 +1,112 @@
+.btn-icon {
+  text-align: center;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  z-index: 0;
+  -webkit-tap-highlight-color: transparent;
+  outline: 0;
+  border: 0;
+  vertical-align: middle;
+  appearance: none;
+  font-weight: 500;
+  padding: 0 10px;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+
+  /* Default size: sm */
+  width: var(--btn-size-sm);
+  height: var(--btn-size-sm);
+  min-width: var(--btn-size-sm);
+
+  /* Disabled */
+  &:disabled,
+  &.disabled {
+    color: var(--neutral-400);
+    background-color: var(--neutral-200);
+    border: 1px solid var(--neutral-200);
+    cursor: not-allowed;
+    pointer-events: auto;
+  }
+
+  /* Size */
+  &.btn-sm {
+    /* Desktop */
+    @media screen and (min-width: 600px) {
+      width: var(--btn-size-sm);
+      height: var(--btn-size-sm);
+      min-width: var(--btn-size-sm);
+
+      i {
+        font-size: 24px;
+      }
+    }
+
+    /* Mobile */
+    @media screen and (max-width: 600px) {
+      width: var(--btn-size-md);
+      height: var(--btn-size-md);
+      min-width: var(--btn-size-md);
+
+      i {
+        font-size: 36px;
+      }
+    }
+  }
+
+  &.btn-md {
+    width: var(--btn-size-md);
+    height: var(--btn-size-md);
+    min-width: var(--btn-size-md);
+
+    i {
+      font-size: 32px;
+    }
+  }
+
+  &.btn-lg {
+    width: var(--btn-size-lg);
+    height: var(--btn-size-lg);
+    min-width: var(--btn-size-lg);
+
+    i {
+      font-size: 48px;
+    }
+  }
+
+  @media screen and (min-width: 600px) {
+    &:hover {
+      background-color: #8884;
+
+      html.dark & {
+        background-color: #fff2;
+      }
+    }
+  }
+
+  /* Color */
+  &.btn-success {
+    color: var(--green-600);
+  }
+
+  &.btn-warning {
+    color: var(--orange-500);
+  }
+
+  &.btn-secondary {
+    color: var(--gray-500);
+  }
+
+  &.btn-danger {
+    color: var(--red-500);
+    /* Desktop */
+    @media screen and (min-width: 600px) {
+      &:hover {
+        background-color: #f002;
+      }
+    }
+  }
+}

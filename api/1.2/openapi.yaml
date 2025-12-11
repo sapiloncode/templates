@@ -1,0 +1,53 @@
+openapi: 3.0.0
+info:
+  title: Service API
+  description: API description
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+
+x-include:
+  - openapi.base.yaml
+
+paths:
+  /account:
+    get:
+      operationId: account/get-account
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - email
+                  - id
+                properties:
+                  id:
+                    type: number
+                    format: int32
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  photo:
+                    type: string
+                    nullable: true
+                  email:
+                    type: string
+                  title:
+                    type: string
+      tags:
+        - Account
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

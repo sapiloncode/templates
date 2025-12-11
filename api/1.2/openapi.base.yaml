@@ -1,0 +1,173 @@
+openapi: 3.0.0
+
+info:
+  title: Service API
+  description: API description
+  version: '1.0'
+  contact: {}
+
+tags: []
+
+servers: []
+
+paths:
+  /version:
+    get:
+      operationId: general/get-version
+      security: []
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - General
+
+  /health:
+    get:
+      operationId: general/get-health
+      security: []
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                properties:
+                  status:
+                    type: string
+      tags:
+        - General
+
+  /favicon.ico:
+    get:
+      operationId: general/get-favicon
+      security: []
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - General
+
+  /:
+    get:
+      operationId: general/get-default
+      security: []
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - General
+
+  /auth/session:
+    post:
+      operationId: auth/session
+      security: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                properties:
+                  token:
+                    type: string
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sid
+              properties:
+                sid:
+                  type: string
+
+  /auth/login:
+    get:
+      operationId: auth/login
+      security: []
+      parameters:
+        - name: back
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '302':
+          description: 'Redirect to OIDC provider'
+      tags:
+        - Auth
+
+  /auth/logout:
+    post:
+      operationId: auth/logout
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 'Logout user'
+      tags:
+        - Auth
+
+  /auth/callback:
+    get:
+      operationId: auth/callback
+      security: []
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: true
+          allowReserved: true
+          schema:
+            type: string
+      responses:
+        '302':
+          description: 'Redirect after successful authentication'
+      tags:
+        - Auth
+
+  /auth/test:
+    post:
+      operationId: auth/test
+      security: []
+      responses:
+        '200':
+          description: 'Test authentication'
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

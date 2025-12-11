@@ -1,0 +1,13 @@
+flowchart TD
+    templates[Template] -->|has many| template_versions[Template Version]
+    apps[App] -->|has| template_versions
+    projects[Project] -->|has many| apps
+    accounts[Account] -->|creates many| projects
+    accounts -->|creates many| apps
+
+    %% Style
+    style templates fill:#353
+    style apps fill:#335
+    style projects fill:#553
+    style accounts fill:#355
+    style template_versions fill:#535

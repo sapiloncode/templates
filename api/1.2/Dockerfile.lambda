@@ -1,0 +1,24 @@
+# 1️⃣ Base image: AWS Lambda Node.js runtime
+FROM public.ecr.aws/lambda/nodejs:20
+
+# 2️⃣ Set working directory inside Lambda task root
+WORKDIR /var/task
+
+# 3️⃣ Copy package files
+COPY package*.json ./
+
+# Copy Prisma schema before installing dependencies
+COPY ./prisma ./prisma
+
+# 4️⃣ Install production dependencies
+RUN npm ci --only=production --no-audit --no-fund --unsafe-perm
+
+# 5️⃣ Copy app source code
+COPY ./build ./build
+
+# 6️⃣ Generate Prisma client (must match Lambda's Linux env)
+RUN npx prisma generate
+
+# 7️⃣ Define Lambda handler (from your lambda.js or index.js)
+#    If you export "handler" from "lambda.js":
+CMD ["build/lambda.handler"]
